@@ -40,11 +40,11 @@
 
                     <div>
                         <label for="categoria_id" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Carpeta</label>
-                        <select name="categoria_id" id="categoria_id" 
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                        <select name="categoria_id" id="categoria_id" size="5"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition overflow-y-auto">
                             <option value="">Sin carpeta</option>
                             @foreach($categorias as $categoria)
-                                <option value="{{ $categoria->id }}" {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}>
+                                <option value="{{ $categoria->id }}" {{ old('categoria_id') == $categoria->id ? 'selected' : '' }} class="py-1">
                                     {{ $categoria->nombre }}
                                 </option>
                             @endforeach
@@ -54,10 +54,10 @@
 
                     <div>
                         <label for="etiquetas" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Etiquetas</label>
-                        <select name="etiquetas[]" id="etiquetas" multiple 
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition h-32">
+                        <select name="etiquetas[]" id="etiquetas" multiple size="5"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition overflow-y-auto">
                             @foreach($etiquetas as $etiqueta)
-                                <option value="{{ $etiqueta->id }}" {{ collect(old('etiquetas'))->contains($etiqueta->id) ? 'selected' : '' }}>
+                                <option value="{{ $etiqueta->id }}" {{ collect(old('etiquetas'))->contains($etiqueta->id) ? 'selected' : '' }} class="py-1">
                                     #{{ $etiqueta->nombre }}
                                 </option>
                             @endforeach

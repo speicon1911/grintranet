@@ -45,6 +45,11 @@
         width: 5px; height: 10px; border: solid white;
         border-width: 0 2px 2px 0; transform: rotate(45deg);
     }
+    .dropdown-scroll-container {
+        max-height: 200px;
+        overflow-y: auto;
+        padding: 0.5rem;
+    }
 </style>
 
 <div class="container mx-auto px-4 py-8">

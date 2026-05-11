@@ -26,11 +26,11 @@
 
                     <div>
                         <label for="parent_id" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Carpeta Superior (Opcional)</label>
-                        <select name="parent_id" id="parent_id" 
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                        <select name="parent_id" id="parent_id" size="5"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition overflow-y-auto">
                             <option value="">Ninguna (Carpeta Raíz)</option>
                             @foreach($carpetasPadre as $padre)
-                                <option value="{{ $padre->id }}" {{ old('parent_id') == $padre->id ? 'selected' : '' }}>{{ $padre->nombre }}</option>
+                                <option value="{{ $padre->id }}" {{ old('parent_id') == $padre->id ? 'selected' : '' }} class="py-1">{{ $padre->nombre }}</option>
                             @endforeach
                         </select>
                         @error('parent_id')
