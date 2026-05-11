@@ -222,11 +222,11 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex flex-wrap gap-1">
-                                    @foreach($documento->categorias as $categoria)
+                                    @if($documento->categoria)
                                         <span class="px-2 py-0.5 text-[10px] font-bold rounded border bg-blue-500/10 text-white border-blue-500/20">
-                                            {{ $categoria->nombre }}
+                                            {{ $documento->categoria->nombre }}
                                         </span>
-                                    @endforeach
+                                    @endif
                                 </div>
                             </td>
                             <td class="px-6 py-4">

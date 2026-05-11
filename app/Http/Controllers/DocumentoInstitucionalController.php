@@ -14,7 +14,7 @@ class DocumentoInstitucionalController extends Controller
 {
     public function index(Request $request)
     {
-        $query = DocumentoInstitucional::with(['etiquetas', 'categorias']);
+        $query = DocumentoInstitucional::with(['etiquetas', 'categoria']);
 
         // Búsqueda general
         if ($request->filled('buscar')) {
@@ -22,7 +22,7 @@ class DocumentoInstitucionalController extends Controller
             $query->where(function($q) use ($buscar) {
                 $q->where('titulo', 'like', "%{$buscar}%")
                   ->orWhere('descripcion', 'like', "%{$buscar}%")
-                  ->orWhereHas('categorias', function($q) use ($buscar) {
+                  ->orWhereHas('categoria', function($q) use ($buscar) {
                       $q->where('nombre', 'like', "%{$buscar}%");
                   })
                   ->orWhereHas('etiquetas', function($q) use ($buscar) {
@@ -31,11 +31,9 @@ class DocumentoInstitucionalController extends Controller
             });
         }
 
-        // Filtro categorías (multiple)
+        // Filtro categorías (multiple en el filtro, pero el documento solo tiene una)
         if ($request->filled('categorias')) {
-            $query->whereHas('categorias', function($q) use ($request) {
-                $q->whereIn('categorias.id', (array) $request->categorias);
-            });
+            $query->whereIn('categoria_id', (array) $request->categorias);
         }
 
         // Filtro etiquetas (multiple)
@@ -78,10 +76,6 @@ class DocumentoInstitucionalController extends Controller
             $documento->etiquetas()->sync($request->etiquetas);
         }
 
-        if ($request->has('categorias')) {
-            $documento->categorias()->sync($request->categorias);
-        }
-
         return redirect()->route('documentos.index')
             ->with('success', 'Documento creado correctamente.');
     }
@@ -106,10 +100,6 @@ class DocumentoInstitucionalController extends Controller
             $documento->etiquetas()->sync($request->etiquetas);
         }
 
-        if ($request->has('categorias')) {
-            $documento->categorias()->sync($request->categorias);
-        }
-
         return redirect()->route('documentos.index')
             ->with('success', 'Documento actualizado correctamente.');
     }
@@ -117,7 +107,6 @@ class DocumentoInstitucionalController extends Controller
     public function destroy(DocumentoInstitucional $documento)
     {
         $documento->etiquetas()->detach();
-        $documento->categorias()->detach();
         $documento->delete();
 
         return redirect()->route('documentos.index')

@@ -25,6 +25,6 @@ class Categoria extends Model
 
     public function documentos()
     {
-        return $this->belongsToMany(DocumentoInstitucional::class, 'documento_categoria', 'categoria_id', 'documento_id');
+        return $this->hasMany(DocumentoInstitucional::class, 'categoria_id');
     }
 }

@@ -39,17 +39,17 @@
                     </div>
 
                     <div>
-                        <label for="categorias" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Carpetas</label>
-                        <select name="categorias[]" id="categorias" multiple 
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition h-32">
+                        <label for="categoria_id" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Carpeta</label>
+                        <select name="categoria_id" id="categoria_id" 
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                            <option value="">Sin carpeta</option>
                             @foreach($categorias as $categoria)
-                                <option value="{{ $categoria->id }}" {{ collect(old('categorias'))->contains($categoria->id) ? 'selected' : '' }}>
+                                <option value="{{ $categoria->id }}" {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}>
                                     {{ $categoria->nombre }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('categorias') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                        <p class="mt-2 text-xs text-gray-500 italic">Haz clic para seleccionar/deseleccionar. No necesitas Ctrl.</p>
+                        @error('categoria_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
@@ -109,6 +109,5 @@
     };
 
     toggleSelect('etiquetas');
-    toggleSelect('categorias');
 </script>
 @endsection
