@@ -7,14 +7,15 @@
             <div class="flex items-center space-x-4">
                 <h1 class="text-3xl font-bold text-gray-800 dark:text-white">{{ $documento->titulo }}</h1>
                 <div class="flex flex-wrap gap-1">
-                    @foreach($documento->categorias as $categoria)
+                    @if($documento->categoria)
+                        @php $categoria = $documento->categoria; @endphp
                         <span class="px-2 py-0.5 text-[10px] font-bold rounded border {{ 
                             ($categoria->tipoRecurso->nombre ?? '') === 'departamento' ? 'bg-purple-50 text-purple-600 border-purple-100' : 
                             (($categoria->tipoRecurso->nombre ?? '') === 'curso' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-orange-50 text-orange-600 border-orange-100') 
                         }}">
                             {{ $categoria->nombre }}
                         </span>
-                    @endforeach
+                    @endif
                 </div>
             </div>
             <div class="flex space-x-4">
@@ -64,16 +65,17 @@
                         <div>
                             <span class="block text-xs font-semibold text-gray-500 uppercase mb-1">Categorías</span>
                             <div class="flex flex-wrap gap-1">
-                                @forelse($documento->categorias as $categoria)
+                                @if($documento->categoria)
+                                    @php $categoria = $documento->categoria; @endphp
                                     <a href="{{ route('categorias.show', $categoria) }}" class="px-2 py-0.5 text-[10px] font-bold rounded border transition {{ 
                                         ($categoria->tipoRecurso->nombre ?? '') === 'departamento' ? 'bg-purple-50 text-purple-600 border-purple-100 hover:bg-purple-100' : 
                                         (($categoria->tipoRecurso->nombre ?? '') === 'curso' ? 'bg-green-50 text-green-600 border-green-100 hover:bg-green-100' : 'bg-orange-50 text-orange-600 border-orange-100 hover:bg-orange-100') 
                                     }}">
                                         {{ $categoria->nombre }}
                                     </a>
-                                @empty
+                                @else
                                     <span class="text-sm text-gray-500 italic">Sin categorías.</span>
-                                @endforelse
+                                @endif
                             </div>
                         </div>
                         <div>
