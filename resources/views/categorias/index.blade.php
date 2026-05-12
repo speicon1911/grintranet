@@ -53,12 +53,36 @@
             <h1 class="text-3xl font-bold text-white">Carpetas</h1>
             <p class="text-slate-400 mt-1">Organiza y gestiona las carpetas para los documentos institucionales.</p>
         </div>
-        <a href="{{ route('categorias.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-xl transition duration-300 shadow-lg flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-            Nueva Carpeta
-        </a>
+        <div class="flex items-center gap-4">
+            <!-- Selector de Vista -->
+            <div class="flex bg-slate-800/50 p-1 rounded-xl border border-slate-700">
+                <button type="button" id="btn-view-list" 
+                        class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 {{ request('view') !== 'tree' ? 'bg-sky-500 text-white shadow-lg' : 'text-slate-400 hover:text-white' }}">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                        </svg>
+                        Lista
+                    </div>
+                </button>
+                <button type="button" id="btn-view-tree" 
+                        class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 {{ request('view') === 'tree' ? 'bg-sky-500 text-white shadow-lg' : 'text-slate-400 hover:text-white' }}">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Jerarquía
+                    </div>
+                </button>
+            </div>
+            
+            <a href="{{ route('categorias.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-xl transition duration-300 shadow-lg flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Nueva Carpeta
+            </a>
+        </div>
     </div>
 
     @if(session('success'))
@@ -100,7 +124,11 @@
     </div>
 
     <div id="table-container">
-        @include('categorias._table')
+        @if(request('view') === 'tree')
+            @include('categorias._tree')
+        @else
+            @include('categorias._table')
+        @endif
     </div>
 </div>
 
@@ -132,6 +160,31 @@
             });
         });
 
+        // Toggle View Logic
+        const btnList = document.getElementById('btn-view-list');
+        const btnTree = document.getElementById('btn-view-tree');
+        let currentView = new URLSearchParams(window.location.search).get('view') || 'list';
+
+        btnList.addEventListener('click', () => switchView('list'));
+        btnTree.addEventListener('click', () => switchView('tree'));
+
+        function switchView(view) {
+            currentView = view;
+            // Update buttons
+            if (view === 'tree') {
+                btnTree.classList.add('bg-sky-500', 'text-white', 'shadow-lg');
+                btnTree.classList.remove('text-slate-400', 'hover:text-white');
+                btnList.classList.remove('bg-sky-500', 'text-white', 'shadow-lg');
+                btnList.classList.add('text-slate-400', 'hover:text-white');
+            } else {
+                btnList.classList.add('bg-sky-500', 'text-white', 'shadow-lg');
+                btnList.classList.remove('text-slate-400', 'hover:text-white');
+                btnTree.classList.remove('bg-sky-500', 'text-white', 'shadow-lg');
+                btnTree.classList.add('text-slate-400', 'hover:text-white');
+            }
+            refreshResults();
+        }
+
         document.addEventListener('click', () => {
             document.querySelectorAll('.dropdown-content').forEach(el => el.classList.remove('show'));
             document.querySelectorAll('.arrow-icon').forEach(el => el.style.transform = 'rotate(0deg)');
@@ -145,6 +198,11 @@
         async function refreshResults() {
             const formData = new FormData(form);
             const params = new URLSearchParams(formData);
+            if (currentView === 'tree') {
+                params.set('view', 'tree');
+            } else {
+                params.delete('view');
+            }
             
             try {
                 const response = await fetch(`${window.location.pathname}?${params.toString()}`, {

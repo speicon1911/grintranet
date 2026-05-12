@@ -18,6 +18,11 @@ class Categoria extends Model
         return $this->hasMany(Categoria::class, 'parent_id');
     }
 
+    public function childrenRecursive()
+    {
+        return $this->children()->with(['childrenRecursive', 'documentos']);
+    }
+
     public function tipoRecurso()
     {
         return $this->belongsTo(TipoRecurso::class);

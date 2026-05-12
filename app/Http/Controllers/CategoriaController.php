@@ -10,6 +10,19 @@ class CategoriaController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->get('view') === 'tree') {
+            $tree = Categoria::whereNull('parent_id')
+                ->with(['childrenRecursive', 'documentos'])
+                ->orderBy('nombre')
+                ->get();
+
+            if ($request->ajax()) {
+                return view('categorias._tree', compact('tree'))->render();
+            }
+
+            return view('categorias.index', compact('tree'));
+        }
+
         $query = Categoria::with(['parent'])->withCount('documentos');
 
         // Búsqueda
