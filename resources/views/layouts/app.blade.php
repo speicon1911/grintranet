@@ -138,7 +138,6 @@
                                     <span style="margin-left: 1rem;">Documentos</span>
                                 </a>
                             </li>
-                            @hasanyrole('admin|directiva')
                             <li>
                                 <a href="{{ route('categorias.index') }}"
                                     class="nav-link {{ request()->routeIs('categorias.*') ? 'active' : '' }}">
@@ -146,6 +145,7 @@
                                 </a>
                             </li>
 
+                            @hasanyrole('admin|directiva')
                             <li>
                                 <a href="{{ route('etiquetas.index') }}"
                                     class="nav-link {{ request()->routeIs('etiquetas.*') ? 'active' : '' }}">

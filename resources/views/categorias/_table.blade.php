@@ -39,7 +39,9 @@
                         </span>
                     </div>
                 </th>
+                @hasanyrole('admin|directiva')
                 <th class="px-6 py-3 text-right text-xs font-bold text-slate-400 uppercase tracking-wider">Acciones</th>
+                @endhasanyrole
             </tr>
         </thead>
         <tbody class="divide-y divide-slate-700">
@@ -63,6 +65,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         {{ $categoria->documentos_count }} documentos
                     </td>
+                    @hasanyrole('admin|directiva')
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex justify-end items-center space-x-3">
                             <a href="{{ route('categorias.edit', $categoria) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 flex items-center" title="Editar">
@@ -81,6 +84,7 @@
                             </form>
                         </div>
                     </td>
+                    @endhasanyrole
                 </tr>
             @empty
                 <tr>

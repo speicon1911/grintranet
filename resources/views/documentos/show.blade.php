@@ -19,9 +19,11 @@
                 </div>
             </div>
             <div class="flex space-x-4">
+                @hasanyrole('admin|directiva')
                 <a href="{{ route('documentos.edit', $documento) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-md">
                     Editar
                 </a>
+                @endhasanyrole
                 <a href="{{ route('documentos.index') }}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition flex items-center">
                     &larr; Volver
                 </a>

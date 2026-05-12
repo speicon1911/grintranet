@@ -78,12 +78,14 @@ Route::middleware(['auth'])->group(function () {
 
     // Documentos Institucionales - Acceso de consulta para todos los autenticados
     Route::get('documentos', [DocumentoInstitucionalController::class, 'index'])->name('documentos.index');
+    Route::get('categorias', [CategoriaController::class, 'index'])->name('categorias.index');
+    Route::get('categorias/{categoria}', [CategoriaController::class, 'show'])->name('categorias.show');
 
     // Gestión Documental - Solo Admin y Directiva pueden crear, editar o borrar
     Route::middleware(['role:admin|directiva'])->group(function () {
         Route::resource('documentos', DocumentoInstitucionalController::class)->except(['index', 'show']);
         Route::resource('etiquetas', EtiquetaController::class);
-        Route::resource('categorias', CategoriaController::class);
+        Route::resource('categorias', CategoriaController::class)->except(['index', 'show']);
         // Route::resource('tipo-recursos', \App\Http\Controllers\TipoRecursoController::class);
     });
 
